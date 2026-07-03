@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Hermann &amp; Marianne · Goldene Hochzeit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     PALETTE — Goldene Hochzeit bei Kerzenlicht
+     Samt #2a1219 / #170a0e · Gold #d9a83c / #f6dc9a / #8f6a1f
+     Creme #f3e9d4 / #b9a68e
+     ============================================================ */
+  :root{
+    --samt:#2a1219;
+    --samt-tief:#170a0e;
+    --gold:#d9a83c;
+    --gold-hell:#f6dc9a;
+    --gold-tief:#8f6a1f;
+    --creme:#f3e9d4;
+    --creme-dim:#b9a68e;
+    --ring-size:min(34vw, 170px);
+    --ring-dicke:calc(var(--ring-size) * 0.13);
+  }
+  @property --glanz { syntax:'<angle>'; initial-value:0deg; inherits:false; }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    margin:0; overflow:hidden;
+    font-family:'Cormorant Garamond', Georgia, serif;
+    color:var(--creme);
+    background:
+      radial-gradient(120% 90% at 50% 8%, var(--samt) 0%, var(--samt-tief) 78%),
+      var(--samt-tief);
+    display:flex; align-items:center; justify-content:center;
+    height:100dvh;
+  }
+
+  .buehne{
+    width:min(560px, 100%);
+    height:100%;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:space-between;
+    padding:clamp(18px,4.5vh,44px) 18px;
+    text-align:center;
+    position:relative; z-index:2;
+  }
+
+  /* ---------- Kopf: wie eine gestochene Einladung ---------- */
+  header{flex:none;}
+  .zeile{
+    font-size:clamp(.68rem,2.6vw,.8rem);
+    letter-spacing:.42em; text-transform:uppercase;
+    color:var(--gold); font-weight:500;
+    text-indent:.42em; /* optisch zentrieren trotz letter-spacing */
+  }
+  h1{
+    font-family:'Pinyon Script', cursive;
+    font-weight:400; margin:.18em 0 .1em;
+    font-size:clamp(2.5rem, 11vw, 4rem);
+    line-height:1.05;
+    color:var(--creme);
+    text-shadow:0 0 26px rgba(217,168,60,.22);
+  }
+  .schmucklinie{
+    display:flex; align-items:center; gap:10px; justify-content:center;
+    color:var(--gold); margin-top:2px;
+  }
+  .schmucklinie::before,.schmucklinie::after{
+    content:""; height:1px; width:clamp(40px,14vw,84px);
+    background:linear-gradient(90deg, transparent, var(--gold));
+  }
+  .schmucklinie::after{background:linear-gradient(90deg, var(--gold), transparent);}
+  .schmucklinie span{font-size:.8rem; transform:rotate(45deg);} /* kleines Karo */
+  .untertitel{
+    margin:8px 0 0; color:var(--creme-dim);
+    font-size:clamp(.95rem,3.4vw,1.1rem); font-style:italic;
+  }
+
+  /* ---------- Bühne für die Ringe ---------- */
+  .stage{
+    position:relative; width:100%;
+    flex:1 1 auto; min-height:0;
+    touch-action:none;
+  }
+  .ring{
+    position:absolute; left:0; top:0;
+    width:var(--ring-size); height:var(--ring-size);
+    border-radius:50%;
+    background:conic-gradient(from var(--glanz),
+      var(--gold-tief), var(--gold-hell) 18%, var(--gold) 32%,
+      var(--gold-tief) 52%, var(--gold-hell) 68%, var(--gold) 84%, var(--gold-tief));
+    -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - var(--ring-dicke)), #000 calc(100% - var(--ring-dicke) + 1px));
+            mask:radial-gradient(farthest-side, transparent calc(100% - var(--ring-dicke)), #000 calc(100% - var(--ring-dicke) + 1px));
+    filter:drop-shadow(0 6px 18px rgba(0,0,0,.55)) drop-shadow(0 0 14px rgba(217,168,60,.28));
+    cursor:grab; will-change:transform;
+    animation:atmen 3.6s ease-in-out infinite;
+  }
+  .ring:active{cursor:grabbing;}
+  .ring:focus-visible{outline:2px solid var(--gold-hell); outline-offset:6px;}
+  @keyframes atmen{
+    50%{filter:drop-shadow(0 6px 18px rgba(0,0,0,.55)) drop-shadow(0 0 26px rgba(217,168,60,.5));}
+  }
+  .stage.fest .ring{
+    animation:glanzlauf 6s linear infinite;
+    cursor:default;
+  }
+  @keyframes glanzlauf{ to{--glanz:360deg;} }
+
+  /* die 50 im Überlappungsbereich */
+  .fuenfzig{
+    position:absolute; left:50%; top:24%;
+    transform:translate(-50%,-50%) scale(.5);
+    font-weight:600; font-size:clamp(4.5rem, 24vw, 8rem);
+    line-height:1;
+    background:linear-gradient(175deg, var(--gold-hell) 20%, var(--gold) 55%, var(--gold-tief));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    opacity:0; pointer-events:none;
+    filter:drop-shadow(0 3px 12px rgba(0,0,0,.8)) drop-shadow(0 0 28px rgba(23,10,14,.55));
+    transition:opacity .7s ease .25s, transform .7s cubic-bezier(.2,1.4,.4,1) .25s;
+  }
+  .stage.fest .fuenfzig{opacity:1; transform:translate(-50%,-50%) scale(1);}
+
+  /* ---------- Fuß: Hinweis / Spieler ---------- */
+  footer{flex:none; min-height:112px; width:100%;}
+  .hinweis{margin:0; font-size:clamp(1.05rem,4vw,1.25rem); font-style:italic; color:var(--creme);}
+  .hinweis small{display:block; margin-top:6px; font-size:.78em; color:var(--creme-dim); font-style:normal;}
+
+  .spieler{
+    display:none; flex-direction:column; align-items:center; gap:12px;
+    animation:auftauchen .8s ease both;
+  }
+  .spieler.sichtbar{display:flex;}
+  .hinweis.weg{display:none;}
+  @keyframes auftauchen{from{opacity:0; transform:translateY(10px);} to{opacity:1;}}
+
+  .taste{
+    width:64px; height:64px; border-radius:50%;
+    border:1px solid var(--gold);
+    background:radial-gradient(circle at 35% 30%, rgba(246,220,154,.25), rgba(217,168,60,.08));
+    color:var(--gold-hell); font-size:1.5rem; line-height:1;
+    cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;
+    display:flex; align-items:center; justify-content:center;
+    font-family:inherit;
+  }
+  .taste:hover{transform:scale(1.06); box-shadow:0 0 22px rgba(217,168,60,.4);}
+  .taste:focus-visible{outline:2px solid var(--gold-hell); outline-offset:4px;}
+
+  .balken{
+    width:min(320px, 78vw); height:2px; border-radius:2px;
+    background:rgba(243,233,212,.18); overflow:hidden;
+  }
+  .balken i{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--gold),var(--gold-hell));}
+  .status{margin:0; font-size:.95rem; color:var(--creme-dim); font-style:italic; min-height:1.3em;}
+
+  /* ---------- Goldstaub & Konfetti ---------- */
+  .staub{position:fixed; inset:0; pointer-events:none; z-index:1;}
+  .staub i{
+    position:absolute; width:3px; height:3px; border-radius:50%;
+    background:var(--gold-hell); opacity:.35;
+    animation:schweben linear infinite;
+  }
+  @keyframes schweben{
+    from{transform:translateY(12vh) translateX(0);}
+    to{transform:translateY(-14vh) translateX(4vw); opacity:0;}
+  }
+  #konfetti{position:fixed; inset:0; pointer-events:none; z-index:9;}
+
+  @media (prefers-reduced-motion: reduce){
+    .ring{animation:none;}
+    .stage.fest .ring{animation:none;}
+    .staub{display:none;}
+    .fuenfzig{transition:none;}
+    .spieler{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="buehne">
+  <header>
+    <div class="zeile">Goldene Hochzeit</div>
+    <h1 id="namen">Hermann &amp; Marianne</h1>
+    <div class="schmucklinie"><span>◆</span></div>
+    <p class="untertitel" id="untertitel">Zwei Ringe, ein Leben – fünfzig goldene Jahre</p>
+  </header>
+
+  <div class="stage" id="stage" aria-label="Zwei goldene Ringe zum Zusammenschieben">
+    <div class="ring" id="ringA" tabindex="0" role="button" aria-label="Linker Ring – mit Enter zusammenführen"></div>
+    <div class="ring" id="ringB" tabindex="0" role="button" aria-label="Rechter Ring – mit Enter zusammenführen"></div>
+    <div class="fuenfzig">50</div>
+  </div>
+
+  <footer>
+    <p class="hinweis" id="hinweis">
+      Schiebt die beiden Ringe zusammen!
+      <small>Geht auch zu zweit – oder einfach zweimal antippen.</small>
+    </p>
+    <div class="spieler" id="spieler">
+      <button class="taste" id="taste" aria-label="Abspielen oder anhalten">❚❚</button>
+      <div class="balken"><i id="fortschritt"></i></div>
+      <p class="status" id="status"></p>
+    </div>
+  </footer>
+</div>
+
+<div class="staub" id="staub" aria-hidden="true"></div>
+<canvas id="konfetti" aria-hidden="true"></canvas>
+
+<script>
+/* ================================================================
+   KONFIGURATION — hier anpassen
+   ================================================================ */
+const CONFIG = {
+  namen: "Hermann & Marianne",
+  untertitel: "Zwei Ringe, ein Leben – fünfzig goldene Jahre",
+  liedDatei: "lied.mp3",   // MP3 mit genau diesem Namen ins gleiche Repo legen
+};
+
+/* ================================================================
+   GRUNDLAGEN
+   ================================================================ */
+const reduziert = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.getElementById('namen').innerHTML = CONFIG.namen.replace('&','&amp;');
+document.getElementById('untertitel').textContent = CONFIG.untertitel;
+
+const stage = document.getElementById('stage');
+const ringA = document.getElementById('ringA');
+const ringB = document.getElementById('ringB');
+const hinweis = document.getElementById('hinweis');
+const spieler = document.getElementById('spieler');
+const taste = document.getElementById('taste');
+const fortschritt = document.getElementById('fortschritt');
+const statusEl = document.getElementById('status');
+
+/* Audio */
+const lied = new Audio(CONFIG.liedDatei);
+lied.preload = 'auto';
+let liedOk = true;
+lied.addEventListener('error', () => { liedOk = false; });
+
+/* ================================================================
+   RINGE: Position & Ziehen (auch zu zweit)
+   ================================================================ */
+const pos = { A:{x:0,y:0}, B:{x:0,y:0} };   // Mittelpunkte in Stage-Koordinaten
+let ringR = 0, fest = false;
+
+function masse(){
+  const s = ringA.getBoundingClientRect().width;
+  ringR = s/2;
+  return { w: stage.clientWidth, h: stage.clientHeight };
+}
+function setze(el, p){
+  el.style.transform = `translate(${p.x - ringR}px, ${p.y - ringR}px)`;
+}
+function startlage(){
+  const {w,h} = masse();
+  pos.A = { x: w*0.5 - Math.min(w*0.30, ringR*1.9), y: h*0.60 };
+  pos.B = { x: w*0.5 + Math.min(w*0.30, ringR*1.9), y: h*0.56 };
+  setze(ringA, pos.A); setze(ringB, pos.B);
+}
+window.addEventListener('resize', () => { if(!fest) startlage(); else endlage(false); });
+
+/* Ziehen mit mehreren Fingern gleichzeitig */
+const zieher = new Map();   // pointerId -> {key, dx, dy}
+function stageXY(e){
+  const r = stage.getBoundingClientRect();
+  return { x: e.clientX - r.left, y: e.clientY - r.top };
+}
+function anfassen(e, key){
+  if (fest) return;
+  const p = stageXY(e);
+  zieher.set(e.pointerId, { key, dx: p.x - pos[key].x, dy: p.y - pos[key].y });
+  e.currentTarget.setPointerCapture(e.pointerId);
+  e.preventDefault();
+}
+ringA.addEventListener('pointerdown', e => anfassen(e,'A'));
+ringB.addEventListener('pointerdown', e => anfassen(e,'B'));
+
+window.addEventListener('pointermove', e => {
+  const z = zieher.get(e.pointerId);
+  if (!z || fest) return;
+  const {w,h} = masse();
+  const p = stageXY(e);
+  pos[z.key].x = Math.min(w - ringR*0.4, Math.max(ringR*0.4, p.x - z.dx));
+  pos[z.key].y = Math.min(h - ringR*0.4, Math.max(ringR*0.4, p.y - z.dy));
+  setze(z.key === 'A' ? ringA : ringB, pos[z.key]);
+  pruefe();
+});
+window.addEventListener('pointerup', e => zieher.delete(e.pointerId));
+window.addEventListener('pointercancel', e => zieher.delete(e.pointerId));
+
+/* Doppeltipp / Tastatur = Hilfe zum Zusammenführen */
+let letzterTipp = 0;
+stage.addEventListener('pointerup', () => {
+  const jetzt = Date.now();
+  if (jetzt - letzterTipp < 400 && !fest) zusammenfuehren();
+  letzterTipp = jetzt;
+});
+[ringA, ringB].forEach(r => r.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && !fest){ e.preventDefault(); zusammenfuehren(); }
+}));
+
+function abstand(){
+  const dx = pos.A.x - pos.B.x, dy = pos.A.y - pos.B.y;
+  return Math.hypot(dx, dy);
+}
+function pruefe(){
+  if (!fest && abstand() < ringR * 1.45) verrasten();
+}
+
+/* animiert beide Ringe in die Endlage und verrastet */
+function zusammenfuehren(){
+  const {w,h} = masse();
+  ringA.style.transition = ringB.style.transition = 'transform .7s cubic-bezier(.3,1.2,.4,1)';
+  pos.A = { x: w/2 - ringR*0.62, y: h*0.62 };
+  pos.B = { x: w/2 + ringR*0.62, y: h*0.62 };
+  setze(ringA,pos.A); setze(ringB,pos.B);
+  setTimeout(verrasten, 700);
+}
+function endlage(animiert){
+  const {w,h} = masse();
+  if (!animiert){ ringA.style.transition = ringB.style.transition = 'none'; }
+  pos.A = { x: w/2 - ringR*0.62, y: h*0.62 };
+  pos.B = { x: w/2 + ringR*0.62, y: h*0.62 };
+  setze(ringA,pos.A); setze(ringB,pos.B);
+}
+
+function verrasten(){
+  if (fest) return;
+  fest = true;
+  zieher.clear();
+  ringA.style.transition = ringB.style.transition = 'transform .45s cubic-bezier(.3,1.4,.4,1)';
+  endlage(true);
+  stage.classList.add('fest');
+  ringA.setAttribute('aria-label','Ringe verbunden');
+  ringB.setAttribute('aria-label','Ringe verbunden');
+  if (!reduziert) konfettiRegen();
+  setTimeout(liedStarten, 900);
+}
+
+/* ================================================================
+   LIED
+   ================================================================ */
+let fanfareCtx = null;
+function fanfare(){
+  fanfareCtx = fanfareCtx || new (window.AudioContext||window.webkitAudioContext)();
+  const ctx = fanfareCtx;
+  if (ctx.state === 'suspended') ctx.resume();
+  let t = ctx.currentTime + 0.05;
+  [523.25, 659.25, 783.99, 1046.5].forEach(f => {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'triangle'; o.frequency.value = f;
+    o.connect(g).connect(ctx.destination);
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(.28, t+.03);
+    g.gain.linearRampToValueAtTime(0, t+.42);
+    o.start(t); o.stop(t+.45);
+    t += .22;
+  });
+}
+
+function zeigeSpieler(){
+  hinweis.classList.add('weg');
+  spieler.classList.add('sichtbar');
+}
+
+function liedStarten(){
+  zeigeSpieler();
+  if (!liedOk){
+    statusEl.textContent = 'Testmodus: „' + CONFIG.liedDatei + '" liegt noch nicht im Ordner – vorerst erklingt eine Fanfare.';
+    taste.textContent = '↺';
+    fanfare();
+    return;
+  }
+  statusEl.textContent = 'Die Musik setzt ein …';
+  lied.play().then(() => {
+    statusEl.textContent = 'Für das goldene Paar!';
+  }).catch(() => {
+    /* Autoplay-Fenster verpasst -> ein Tipp genügt */
+    taste.textContent = '▶';
+    statusEl.textContent = 'Zum Abspielen auf ▶ tippen.';
+  });
+}
+
+taste.addEventListener('click', () => {
+  if (!liedOk){ fanfare(); return; }
+  if (lied.paused){
+    lied.play().then(()=>{ statusEl.textContent = 'Für das goldene Paar!'; }).catch(()=>{});
+  } else {
+    lied.pause();
+  }
+});
+lied.addEventListener('play',  () => { taste.textContent = '❚❚'; });
+lied.addEventListener('pause', () => { taste.textContent = '▶';  });
+lied.addEventListener('timeupdate', () => {
+  if (lied.duration) fortschritt.style.width = (lied.currentTime / lied.duration * 100) + '%';
+});
+lied.addEventListener('ended', () => {
+  taste.textContent = '↺';
+  statusEl.textContent = 'Noch einmal von vorn? Einfach tippen!';
+  lied.currentTime = 0;
+});
+
+/* ================================================================
+   GOLDSTAUB (leise) & KONFETTI (zum Fest)
+   ================================================================ */
+(function staub(){
+  if (reduziert) return;
+  const wrap = document.getElementById('staub');
+  for (let i=0;i<14;i++){
+    const s = document.createElement('i');
+    s.style.left = (Math.random()*100)+'vw';
+    s.style.top = (30+Math.random()*70)+'vh';
+    s.style.animationDuration = (9+Math.random()*10)+'s';
+    s.style.animationDelay = (-Math.random()*12)+'s';
+    s.style.opacity = (.15+Math.random()*.3).toFixed(2);
+    wrap.appendChild(s);
+  }
+})();
+
+function konfettiRegen(){
+  const c = document.getElementById('konfetti');
+  const ctx = c.getContext('2d');
+  c.width = innerWidth; c.height = innerHeight;
+  const farben = ['#d9a83c','#f6dc9a','#8f6a1f','#fff3cf'];
+  const teile = Array.from({length:150}, () => ({
+    x: innerWidth/2 + (Math.random()-.5)*innerWidth*.5,
+    y: innerHeight*0.35 + (Math.random()-.5)*60,
+    vx: (Math.random()-.5)*7,
+    vy: -(3+Math.random()*7),
+    w: 5+Math.random()*6, h: 8+Math.random()*8,
+    rot: Math.random()*Math.PI, vr:(Math.random()-.5)*.25,
+    f: farben[Math.floor(Math.random()*farben.length)],
+  }));
+  const start = performance.now();
+  (function mal(t){
+    const dt = (t - start)/1000;
+    ctx.clearRect(0,0,c.width,c.height);
+    teile.forEach(p => {
+      p.vy += .18; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.f; ctx.globalAlpha = Math.max(0, 1 - dt/4.5);
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+    });
+    if (dt < 4.6) requestAnimationFrame(mal);
+    else ctx.clearRect(0,0,c.width,c.height);
+  })(start);
+}
+
+/* Los geht's */
+startlage();
+</script>
+</body>
+</html>
